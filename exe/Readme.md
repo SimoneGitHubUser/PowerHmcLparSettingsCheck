@@ -1,0 +1,1 @@
+Place Plink.exe file in this folder

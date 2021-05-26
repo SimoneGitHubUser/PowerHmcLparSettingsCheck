@@ -16,4 +16,11 @@ This is all you need. Once you complete the simple initial setup, you have to pr
 
 
 ### Initial Settings
-*  
+1)  PowerHmcLparSettingsCheck uses Plink, to connect to HMC. you can download Plink from 
+ https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+
+Plink.exe file must be placed in the following folder
+../PowerHmcLparSettingsCheck/Exe
+
+
+
