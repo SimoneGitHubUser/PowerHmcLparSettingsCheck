@@ -117,16 +117,18 @@ echo ..
 	echo %date%_%time% ### HmcPromptCheck	 >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
 	
 	echo ********************************************************
-	echo * If "access denied" is prompted below.................*
+	echo * If "access denied" is promted below .................*
 	echo * 1) Close this window with Ctrl+C.....................*
 	echo * 2) Check user and password values....................*
 	echo * 3) In case, do not use blanks, or special characters.*
 	echo *                                                      *
 	echo ********************************************************
 	
-	
-	
-	%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% whoami >%localdir%\%tempfolder%\Hmc_%hmc_ip%_PromptCheck.txt
+	echo whoami > %localdir%\%tempfolder%\PlinkCommand.txt
+
+    %plink_dir%\plink.exe -batch %hmc_user%@%hmc_ip% -pw %hmc_password% -m %localdir%\%tempfolder%\PlinkCommand.txt >%localdir%\%tempfolder%\Hmc_%hmc_ip%_PromptCheck.txt
+	pause
+	rem %plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% whoami >%localdir%\%tempfolder%\Hmc_%hmc_ip%_PromptCheck.txt
 	FOR /F "delims=" %%T IN (%localdir%\%tempfolder%\Hmc_%hmc_ip%_PromptCheck.txt) DO set _HmcPromptCheck=%%T
 	
 	echo .
@@ -143,8 +145,13 @@ echo ..
 :ManagedServerList
 	echo %date%_%time% ### ManagedServerList	 >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
 	
-	%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r sys -F name >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
-	%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r sys -F name >%localdir%\%tempfolder%\Hmc_%hmc_ip%_ManagedServerList.txt																
+    echo lssyscfg -r sys -F name > %localdir%\%tempfolder%\PlinkCommand.txt
+    pause
+    %plink_dir%\plink.exe -batch %hmc_user%@%hmc_ip% -pw %hmc_password% -m %localdir%\%tempfolder%\PlinkCommand.txt >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
+	%plink_dir%\plink.exe -batch %hmc_user%@%hmc_ip% -pw %hmc_password% -m %localdir%\%tempfolder%\PlinkCommand.txt >%localdir%\%tempfolder%\Hmc_%hmc_ip%_ManagedServerList.txt
+	
+    rem %plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r sys -F name >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
+	rem %plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r sys -F name >%localdir%\%tempfolder%\Hmc_%hmc_ip%_ManagedServerList.txt																
 	
     echo ..
     echo ..
@@ -163,9 +170,15 @@ echo ..
 			:process
 			rem echo managed_server_name=%managed_server_name%
 			echo managed_server_name=%managed_server_name% >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
+
+            echo lssyscfg -r lpar -m %managed_server_name% -F lpar_id,name,lpar_env,os400_restricted_io_mode,redundant_err_path_reporting > %localdir%\%tempfolder%\PlinkCommand.txt
+            pause
+            %plink_dir%\plink.exe -batch %hmc_user%@%hmc_ip% -pw %hmc_password% -m %localdir%\%tempfolder%\PlinkCommand.txt >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
+	        %plink_dir%\plink.exe -batch %hmc_user%@%hmc_ip% -pw %hmc_password% -m %localdir%\%tempfolder%\PlinkCommand.txt >%localdir%\%tempfolder%\Hmc_%hmc_ip%_%managed_server_name%_LparList.txt
+
 			rem if %var%==%lpar_id% goto :ExitLparListOk
-			%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% -F lpar_id,name,lpar_env,os400_restricted_io_mode,redundant_err_path_reporting >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
-            %plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% -F lpar_id,name,lpar_env,os400_restricted_io_mode,redundant_err_path_reporting  >%localdir%\%tempfolder%\Hmc_%hmc_ip%_%managed_server_name%_LparList.txt
+			rem %plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% -F lpar_id,name,lpar_env,os400_restricted_io_mode,redundant_err_path_reporting >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
+            rem %plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% -F lpar_id,name,lpar_env,os400_restricted_io_mode,redundant_err_path_reporting  >%localdir%\%tempfolder%\Hmc_%hmc_ip%_%managed_server_name%_LparList.txt
 
                     REM Remove blank spaces from lpar names file
                     @If Exist "%localdir%\%tempfolder%\Hmc_%hmc_ip%_%managed_server_name%_LparList.txt" (For /F Delims^=^ EOL^= %%W In ('More /T1 "%localdir%\%tempfolder%\Hmc_%hmc_ip%_%managed_server_name%_LparList.txt"')Do @Set "$=%%W"&Call Echo(%%$: =%%)>"%localdir%\%tempfolder%\Hmc_%hmc_ip%_%managed_server_name%_LparList.out"
