@@ -108,7 +108,7 @@ echo ..
 		echo Hmc %hmc_ip% has been taken down, waiting for few seconds to check again >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
 				
 		ping localhost -n 1 -w 3000 >NUL
-        pause
+        rem pause
 		goto :PingTheHmc
 	) 
 	:EndPingTheHmc
@@ -127,7 +127,7 @@ echo ..
 	echo whoami > %localdir%\%tempfolder%\PlinkCommand.txt
 
     %plink_dir%\plink.exe -batch %hmc_user%@%hmc_ip% -pw %hmc_password% -m %localdir%\%tempfolder%\PlinkCommand.txt >%localdir%\%tempfolder%\Hmc_%hmc_ip%_PromptCheck.txt
-	pause
+	rem pause
 	rem %plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% whoami >%localdir%\%tempfolder%\Hmc_%hmc_ip%_PromptCheck.txt
 	FOR /F "delims=" %%T IN (%localdir%\%tempfolder%\Hmc_%hmc_ip%_PromptCheck.txt) DO set _HmcPromptCheck=%%T
 	
@@ -146,7 +146,7 @@ echo ..
 	echo %date%_%time% ### ManagedServerList	 >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
 	
     echo lssyscfg -r sys -F name > %localdir%\%tempfolder%\PlinkCommand.txt
-    pause
+    rem pause
     %plink_dir%\plink.exe -batch %hmc_user%@%hmc_ip% -pw %hmc_password% -m %localdir%\%tempfolder%\PlinkCommand.txt >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
 	%plink_dir%\plink.exe -batch %hmc_user%@%hmc_ip% -pw %hmc_password% -m %localdir%\%tempfolder%\PlinkCommand.txt >%localdir%\%tempfolder%\Hmc_%hmc_ip%_ManagedServerList.txt
 	
@@ -172,7 +172,7 @@ echo ..
 			echo managed_server_name=%managed_server_name% >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
 
             echo lssyscfg -r lpar -m %managed_server_name% -F lpar_id,name,lpar_env,os400_restricted_io_mode,redundant_err_path_reporting > %localdir%\%tempfolder%\PlinkCommand.txt
-            pause
+            rem pause
             %plink_dir%\plink.exe -batch %hmc_user%@%hmc_ip% -pw %hmc_password% -m %localdir%\%tempfolder%\PlinkCommand.txt >>%localdir%\PowerHmcLparSettingsCheck_%hmc_ip%.log
 	        %plink_dir%\plink.exe -batch %hmc_user%@%hmc_ip% -pw %hmc_password% -m %localdir%\%tempfolder%\PlinkCommand.txt >%localdir%\%tempfolder%\Hmc_%hmc_ip%_%managed_server_name%_LparList.txt
 
@@ -276,5 +276,6 @@ pause
 
 :Quit
 rem echo pause 005
+echo Finished
 pause
 exit
