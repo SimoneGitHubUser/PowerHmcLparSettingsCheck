@@ -1,5 +1,8 @@
-#Version 1.0.0
+#Version 1.0.1
+* code clean-up
 
-Initial release
-No issue detected
-Some improvements will be released in next versions
+
+#Version 1.0.0
+* Initial release
+* No issue detected
+* Some improvements will be released in next versions

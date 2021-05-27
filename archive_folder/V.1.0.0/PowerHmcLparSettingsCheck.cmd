@@ -1,3 +1,5 @@
+REM Version 1.0.0
+
 @echo off
 rem setLocal EnableDelayedExpansion
 
