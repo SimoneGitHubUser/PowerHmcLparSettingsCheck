@@ -1,8 +1,9 @@
-REM Version 1.0.1
+
 
 @echo off
 rem setLocal EnableDelayedExpansion
 
+set version=1.0.2
 set localdir=%cd%
 set tempfolder=tmp
 
@@ -15,7 +16,7 @@ FOR /F "tokens=1" %%O IN (%localdir%\vars\os_type.txt) DO set os_type=%%O
 
 	color 0A
 
-title PowerHmcLparSettingsCheck_%hmc_ip%
+title PowerHmcLparSettingsCheck_%version%_%hmc_ip%
 
 
 pause

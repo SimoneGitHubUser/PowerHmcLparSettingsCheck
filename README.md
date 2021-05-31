@@ -31,6 +31,8 @@ Plink.exe file must be placed in the following folder
 2) ssh connection and remote commands execution, must be enabled on HMC
 https://www.ibm.com/support/pages/hmc-enhanced-view-enabling-sshremote-command-execution
 
+3) Check and fill required value in ../vars folder (edit txt files)...Check _sample_ files for correct fill.
+
 ## How it works?
 1) Complete Initial Settings
 2) Double click on PowerHmcLparSettingsCheck.cmd, and the tool will execute the following tasks:

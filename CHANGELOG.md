@@ -1,5 +1,9 @@
+#Version 1.0.2
+* Version Identify
+* Some README updates
+
 #Version 1.0.1
-* code clean-up
+* Code clean-up
 
 
 #Version 1.0.0
