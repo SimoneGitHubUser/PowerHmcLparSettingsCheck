@@ -1,6 +1,6 @@
 #Version 1.0.2
 * Version Identify
-* Some README updates
+* Some README updates 
 
 #Version 1.0.1
 * Code clean-up
